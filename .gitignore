@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Environment / Secret
+.env
+kaggle.json
+
+# Logs
+*.log
+
+# Project specific (Datasets)
+# We don't want to push 790MB CSVs to GitHub!
+*.csv
+*.zip
+
+# OS
+.DS_Store

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypto Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body class="min-h-screen overflow-x-hidden relative">
+
+  <!-- Background Blobs -->
+  <div class="blob blob-1 rounded-full mix-blend-multiply"></div>
+  <div class="blob blob-2 rounded-full mix-blend-multiply"></div>
+  <div class="blob blob-3 rounded-full mix-blend-multiply"></div>
+
+  <!-- Navbar -->
+  <nav class="glass fixed w-full z-50 top-0 border-b-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20"> <!-- Taller nav -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold tracking-tight text-white drop-shadow-md">Crypto<span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-violet-400">Tracker</span></span>
+        </div>
+        <div class="flex items-center space-x-6">
+          <span class="text-gray-300 text-sm tracking-wide">Welcome, <span
+              class="text-white font-semibold shadow-purple-500/50">{{ user_name
+              }}</span></span>
+          <a href="/logout"
+            class="glass px-4 py-2 rounded-full text-sm text-pink-300 hover:text-white hover:bg-white/10 transition-all duration-300 border-0 shadow-lg shadow-pink-500/20">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="pt-32 pb-12 px-4 max-w-6xl mx-auto relative z-10">
+
+    <div class="flex justify-between items-end mb-10">
+      <div>
+        <h1
+          class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 drop-shadow-sm">
+          Portfolio</h1>
+        <p class="text-gray-400 mt-2 font-light">Real-time asset tracking</p>
+      </div>
+
+      <!-- Portfolio Summary -->
+      <div class="flex space-x-6">
+        <div class="glass-card px-6 py-4 rounded-2xl text-center min-w-[160px]">
+          <p class="text-gray-400 text-xs uppercase tracking-widest font-bold mb-1">Total Value</p>
+          <p id="total-value" class="text-2xl font-bold text-white">$0.00</p>
+        </div>
+        <div class="glass-card px-6 py-4 rounded-2xl text-center min-w-[160px]">
+          <p class="text-gray-400 text-xs uppercase tracking-widest font-bold mb-1">Total P&L</p>
+          <p id="total-pnl" class="text-2xl font-bold">$0.00</p>
+        </div>
+      </div>
+
+      <button onclick="openModal()"
+        class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:scale-105 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-purple-500/30 transition-transform duration-300 border border-white/20">
+        + Transaction
+      </button>
+    </div>
+
+    <!-- Holdings Table -->
+    <div class="glass-card rounded-3xl p-1 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead class="text-gray-400 uppercase text-xs tracking-wider border-b border-white/5">
+            <tr>
+              <th class="px-8 py-6 font-semibold">Asset</th>
+              <th class="px-8 py-6 font-semibold">Holdings</th>
+              <th class="px-8 py-6 font-semibold">Price</th>
+              <th class="px-8 py-6 font-semibold">Value / P&L</th>
+            </tr>
+          </thead>
+          <tbody id="holdings" class="divide-y divide-white/5">
+            <!-- Dynamic rows go here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <h2 class="text-3xl font-bold text-white mt-12 mb-6">Recent Activity</h2>
+    <div class="glass-card rounded-3xl p-1 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead class="text-gray-400 uppercase text-xs tracking-wider border-b border-white/5">
+            <tr>
+              <th class="px-8 py-6 font-semibold">Asset</th>
+              <th class="px-8 py-6 font-semibold">Action</th>
+              <th class="px-8 py-6 font-semibold">Quantity</th>
+              <th class="px-8 py-6 font-semibold">Price</th>
+              <th class="px-8 py-6 font-semibold">Date</th>
+            </tr>
+          </thead>
+          <tbody id="activity" class="divide-y divide-white/5">
+            <!-- Dynamic rows go here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transaction Modal -->
+  <div id="txnModal"
+    class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300">
+    <div class="glass-card rounded-3xl p-8 w-full max-w-md relative transform transition-all scale-100">
+      <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h2 class="text-3xl font-bold text-white mb-1 text-center">New Entry</h2>
+      <p class="text-gray-400 text-center mb-8 text-sm">Update your portfolio</p>
+
+      <form id="txnForm" class="space-y-5">
+        <div class="space-y-1">
+          <label class="block text-gray-400 text-xs uppercase tracking-wider font-bold ml-1">Asset</label>
+          <div class="relative">
+            <select id="coin_id" class="w-full rounded-xl px-4 py-3 outline-none transition-shadow appearance-none">
+              <!-- Populated via JS -->
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-5">
+          <div class="space-y-1">
+            <label class="block text-gray-400 text-xs uppercase tracking-wider font-bold ml-1">Action</label>
+            <div class="relative">
+              <select id="txn_type" class="w-full rounded-xl px-4 py-3 outline-none transition-shadow appearance-none">
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="block text-gray-400 text-xs uppercase tracking-wider font-bold ml-1">Quantity</label>
+            <input id="quantity" type="number" step="any" placeholder="0.00"
+              class="w-full rounded-xl px-4 py-3 outline-none transition-shadow" required>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-gray-400 text-xs uppercase tracking-wider font-bold ml-1">Price (USD)</label>
+          <input id="price" type="number" step="any" placeholder="$0.00"
+            class="w-full rounded-xl px-4 py-3 outline-none transition-shadow" required>
+        </div>
+
+        <button type="submit"
+          class="w-full mt-6 bg-gradient-to-r from-pink-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700 text-white font-bold py-4 rounded-xl shadow-xl shadow-indigo-500/20 transition-all duration-300 transform hover:-translate-y-1">
+          Confirm Transaction
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

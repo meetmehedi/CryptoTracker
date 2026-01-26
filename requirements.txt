@@ -1,0 +1,7 @@
+flask
+flask-mysqldb
+werkzeug
+requests
+schedule
+kaggle
+gunicorn

@@ -1,0 +1,10 @@
+<form method="post">
+  Coin ID: <input name="coin" />
+  <button>Add</button>
+</form>
+
+<ul>
+  {% for c in data %}
+  <li>{{c[0]}}</li>
+  {% endfor %}
+</ul>
