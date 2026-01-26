@@ -4,11 +4,14 @@ import MySQLdb
 
 # Configuration
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'passwd': '',
-    # 'unix_socket': '/tmp/mysql.sock' # Might need adjustment based on user env
+    'host': os.environ.get('MYSQL_HOST', 'localhost'),
+    'user': os.environ.get('MYSQL_USER', 'root'),
+    'passwd': os.environ.get('MYSQL_PASSWORD', ''),
+    'port': int(os.environ.get('MYSQL_PORT', 3306))
 }
+# Note: Database name is handled inside seed_data logic or via USE cppt_db
+# But since user is using MYSQL_DB, let's ensure we use that if provided.
+DB_NAME = os.environ.get('MYSQL_DB', 'cppt_db')
 CSV_PATH_KAGGLE = '/kaggle/input/daily-crypto-tracker-dataset/daily_crypto_tracker.csv'
 CSV_PATH_LOCAL = 'combined_data.csv'
 
@@ -44,7 +47,7 @@ def run_schema(cursor):
 
 def seed_data(cursor, conn):
     # check if user exists
-    cursor.execute("USE cppt_db")
+    cursor.execute(f"USE {DB_NAME}")
     cursor.execute("SELECT * FROM Users WHERE email = 'mehedi@example.com'")
     if not cursor.fetchone():
         print("Creating dummy user...")
