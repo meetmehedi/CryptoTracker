@@ -36,7 +36,7 @@ CREATE TABLE Prices (
     id INT AUTO_INCREMENT PRIMARY KEY,
     coin_id INT,
     price_date DATE,
-    price_usd DECIMAL(12, 4),
+    price_usd DECIMAL(24, 8),
     FOREIGN KEY (coin_id) REFERENCES Coins(id) ON DELETE CASCADE
 );
 
@@ -46,8 +46,8 @@ CREATE TABLE Transactions (
     user_id INT,
     coin_id INT,
     type ENUM('buy', 'sell'),
-    quantity DECIMAL(12, 4),
-    price_at_time DECIMAL(12, 4),
+    quantity DECIMAL(24, 8),
+    price_at_time DECIMAL(24, 8),
     txn_date DATETIME,
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
     FOREIGN KEY (coin_id) REFERENCES Coins(id) ON DELETE CASCADE
@@ -57,8 +57,8 @@ CREATE TABLE Transactions (
 CREATE TABLE Holdings (
     user_id INT,
     coin_id INT,
-    total_quantity DECIMAL(14, 4) DEFAULT 0,
-    avg_buy_price DECIMAL(14, 4) DEFAULT 0,
+    total_quantity DECIMAL(30, 8) DEFAULT 0,
+    avg_buy_price DECIMAL(24, 8) DEFAULT 0,
     PRIMARY KEY (user_id, coin_id),
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
     FOREIGN KEY (coin_id) REFERENCES Coins(id) ON DELETE CASCADE
