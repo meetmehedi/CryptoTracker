@@ -124,6 +124,11 @@ def main():
     try:
         conn = get_connection()
         cursor = conn.cursor()
+        
+        # Ensure we are using the correct database
+        print(f"Using database: {DB_NAME}")
+        cursor.execute(f"USE `{DB_NAME}`")
+        
         run_schema(cursor)
         conn.commit()
         seed_data(cursor, conn)

@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS cppt_db;
-USE cppt_db;
+-- Database schema for CryptoTracker
+-- The database name should be handled by the connection configuration (e.g., MYSQLDATABASE env var)
 
 -- Clean up
 DROP TRIGGER IF EXISTS update_holdings_after_txn;
