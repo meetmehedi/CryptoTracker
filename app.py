@@ -17,6 +17,18 @@ def manual_init():
     except Exception as e:
         return f"Initialization failed: {e}"
 
+@app.route('/debug_env')
+def debug_env():
+    import os
+    vars = {k: ("SET" if v else "EMPTY") for k in os.environ.keys() if "MYSQL" in k or "DATABASE" in k}
+    return jsonify({
+        "environment_variables_detected": vars,
+        "config_host": app.config.get('MYSQL_HOST'),
+        "config_user": app.config.get('MYSQL_USER'),
+        "config_db": app.config.get('MYSQL_DB'),
+        "config_port": app.config.get('MYSQL_PORT')
+    })
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
