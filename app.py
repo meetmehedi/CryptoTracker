@@ -8,6 +8,15 @@ app.secret_key = 'super_secret_crypto_key'
 
 init_db(app)
 
+@app.route('/initialize_database_manually')
+def manual_init():
+    try:
+        from seed_data import main as run_seeder
+        run_seeder()
+        return "Database initialized successfully! You can now <a href='/'>go to home</a>."
+    except Exception as e:
+        return f"Initialization failed: {e}"
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
