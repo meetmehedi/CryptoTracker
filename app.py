@@ -59,21 +59,25 @@ def register_page():
 # -------------------
 @app.route('/api/login', methods=['POST'])
 def login():
-    data = request.json
-    email = data.get('email')
-    password = data.get('password')
-    
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT id, name, password FROM Users WHERE email=%s", (email,))
-    user = cursor.fetchone()
-    cursor.close()
-    
-    if user and user[2] == password: # Simple text check for now per plan
-        session['user_id'] = user[0]
-        session['user_name'] = user[1]
-        return jsonify({"message": "Login successful", "redirect": "/"})
-    
-    return jsonify({"error": "Invalid credentials"}), 401
+    try:
+        data = request.json
+        email = data.get('email')
+        password = data.get('password')
+        
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT id, name, password FROM Users WHERE email=%s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
+        
+        if user and user[2] == password: # Simple text check for now per plan
+            session['user_id'] = user[0]
+            session['user_name'] = user[1]
+            return jsonify({"message": "Login successful", "redirect": "/"})
+        
+        return jsonify({"error": "Invalid credentials"}), 401
+    except Exception as e:
+        print(f"Login error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/logout')
 def logout():
