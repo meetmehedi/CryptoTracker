@@ -28,8 +28,15 @@ I have already pushed your code to: `https://github.com/meetmehedi/CryptoTracker
 
 ## 4. Deploy and Initialize
 1.  Railway will automatically deploy your app.
-2.  Once the status is "Success", go to the **View Logs** or **Terminal** tab for the web service.
-3.  Run the initialization command (one-time):
+2.  Once the status is "Success", you have two ways to set up the database:
+
+### Option A: Via Browser (Easiest)
+Simply visit this URL while your app is running:
+`https://your-app-url.railway.app/initialize_database_manually`
+
+### Option B: Via Terminal
+1.  Go to the **Terminal** tab for the web service.
+2.  Run the initialization command:
     ```bash
     python seed_data.py
     ```
