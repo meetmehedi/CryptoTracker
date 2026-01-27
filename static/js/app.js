@@ -14,15 +14,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
-                const data = await res.json();
-                if (res.ok) {
-                    window.location.href = data.redirect;
+
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await res.json();
+                    if (res.ok) {
+                        window.location.href = data.redirect;
+                    } else {
+                        alert(data.error || 'Login failed');
+                    }
                 } else {
-                    alert(data.error || 'Login failed');
+                    const text = await res.text();
+                    console.error("Non-JSON response:", text);
+                    alert('Server Error (Check logs): ' + text.substring(0, 100));
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred: ' + err.message);
+                alert('Network Error: ' + err.message);
             }
         });
     }
@@ -42,16 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, password })
                 });
-                const data = await res.json();
-                if (res.ok) {
-                    alert('Registration successful! Please login.');
-                    window.location.href = '/login_page';
+
+                const contentType = res.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await res.json();
+                    if (res.ok) {
+                        alert('Registration successful! Please login.');
+                        window.location.href = '/login_page';
+                    } else {
+                        alert(data.error || 'Registration failed');
+                    }
                 } else {
-                    alert(data.error || 'Registration failed');
+                    const text = await res.text();
+                    console.error("Non-JSON response:", text);
+                    alert('Server Error (Check logs): ' + text.substring(0, 100));
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred: ' + err.message);
+                alert('Network Error: ' + err.message);
             }
         });
     }
