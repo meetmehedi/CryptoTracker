@@ -86,6 +86,7 @@ def register():
         mysql.connection.commit()
         return jsonify({"message": "User registered successfully"}), 201
     except Exception as e:
+        print(f"Registration error: {e}")
         return jsonify({"error": str(e)}), 400
     finally:
         cursor.close()

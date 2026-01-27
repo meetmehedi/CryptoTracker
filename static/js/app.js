@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred');
+                alert('An error occurred: ' + err.message);
             }
         });
     }
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred');
+                alert('An error occurred: ' + err.message);
             }
         });
     }
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred');
+                alert('An error occurred: ' + err.message);
             }
         });
     }
