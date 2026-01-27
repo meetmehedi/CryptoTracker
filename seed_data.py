@@ -3,15 +3,14 @@ import os
 import MySQLdb
 
 # Configuration
+# Railway uses MYSQLHOST, MYSQLUSER, etc. while my app used MYSQL_HOST, MYSQL_USER
 DB_CONFIG = {
-    'host': os.environ.get('MYSQL_HOST', 'localhost'),
-    'user': os.environ.get('MYSQL_USER', 'root'),
-    'passwd': os.environ.get('MYSQL_PASSWORD', ''),
-    'port': int(os.environ.get('MYSQL_PORT', 3306))
+    'host': os.environ.get('MYSQLHOST') or os.environ.get('MYSQL_HOST', 'localhost'),
+    'user': os.environ.get('MYSQLUSER') or os.environ.get('MYSQL_USER', 'root'),
+    'passwd': os.environ.get('MYSQLPASSWORD') or os.environ.get('MYSQL_PASSWORD', ''),
+    'port': int(os.environ.get('MYSQLPORT') or os.environ.get('MYSQL_PORT', 3306))
 }
-# Note: Database name is handled inside seed_data logic or via USE cppt_db
-# But since user is using MYSQL_DB, let's ensure we use that if provided.
-DB_NAME = os.environ.get('MYSQL_DB', 'cppt_db')
+DB_NAME = os.environ.get('MYSQLDATABASE') or os.environ.get('MYSQL_DB', 'cppt_db')
 CSV_PATH_KAGGLE = '/kaggle/input/daily-crypto-tracker-dataset/daily_crypto_tracker.csv'
 CSV_PATH_LOCAL = 'combined_data.csv'
 
