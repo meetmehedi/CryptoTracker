@@ -6,7 +6,22 @@ app = Flask(__name__)
 # In production, use a secure random key
 app.secret_key = 'super_secret_crypto_key' 
 
-init_db(app)
+try:
+    init_db(app)
+except Exception as e:
+    print(f"CRITICAL: init_db failed on startup: {e}")
+
+@app.route('/ping')
+def ping():
+    return "Pong! App is running."
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    import traceback
+    from werkzeug.exceptions import HTTPException
+    if isinstance(e, HTTPException):
+        return e
+    return f"<h1>Internal Server Error</h1><pre>{traceback.format_exc()}</pre>", 500
 
 @app.route('/initialize_database_manually')
 def manual_init():
