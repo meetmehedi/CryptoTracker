@@ -52,4 +52,4 @@ A full-stack Cryptocurrency Portfolio Tracker featuring a futuristic **Liquid Gl
 This project was developed as part of a **Database Management Systems (DBMS)** course, focusing on relational modeling, data integrity, and automated ETL processes.
 
 ---
-*Created by [Your Name]*
+*Created by Md. Mehedi Hasan*
