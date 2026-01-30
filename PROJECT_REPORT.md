@@ -3,8 +3,42 @@
 
 ---
 
-## 1. Executive Summary
-CryptoTracker is a comprehensive web-based application designed to provide users with real-time tracking and management of their cryptocurrency portfolios. Developed as part of a Database Management Systems (DBMS) course, the project emphasizes data integrity, automated ETL processes, and modern user interface design. The system integrates large-scale historical datasets from Kaggle with live market data from the CoinGecko API.
+## Table of Contents
+
+1. [Introduction](#1-introduction)
+    - [1.1 Background](#11-background)
+    - [1.2 Problem Statement](#12-problem-statement)
+    - [1.3 Project Overview](#13-project-overview)
+2. [Project Objectives](#2-project-objectives)
+3. [Technical Architecture](#3-technical-architecture)
+    - [Tech Stack](#tech-stack)
+    - [System Diagram](#system-diagram)
+4. [Database Design](#4-database-design)
+    - [Entity-Relationship Diagram](#entity-relationship-diagram)
+    - [Key Logic: Weighted Average Cost (WAC)](#key-logic-weighted-average-cost-wac)
+5. [Key Features](#5-key-features)
+    - [Liquid Glass UI](#liquid-glass-ui)
+    - [Real-Time Market Sync](#real-time-market-sync)
+    - [Portfolio Analytics](#portfolio-analytics)
+    - [Smart Alert System](#smart-alert-system)
+    - [Dual-Timezone Logging](#dual-timezone-logging)
+6. [Setup & Deployment](#6-setup--deployment)
+    - [Local Environment](#local-environment)
+    - [Cloud Deployment](#cloud-deployment)
+7. [Conclusion & Future Work](#7-conclusion--future-work)
+
+---
+
+## 1. Introduction
+
+### 1.1 Background
+The financial landscape has undergone a paradigm shift with the advent of cryptocurrency and blockchain technology. What began as a niche experiment with Bitcoin has evolved into a global asset class worth trillions of dollars. However, this decentralized nature brings unique challenges: unlike traditional equity markets, the crypto market operates 24/7, is highly volatile, and involves assets distributed across exchanges and wallets.
+
+### 1.2 Problem Statement
+For investors, manually tracking a diverse portfolio is increasingly difficult. Calculating the **Weighted Average Cost (WAC)** of holdings after multiple buy/sell transactions, monitoring real-time price fluctuations, and assessing overall profitability often requires complex spreadsheets that are prone to human error.
+
+### 1.3 Project Overview
+**CryptoTracker** is a specialized Database Management System (DBMS) designed to solve these challenges. It provides a robust, web-based platform for real-time portfolio tracking. By integrating a structured MySQL database with a responsive Flask-based web application, the system ensures data integrity through automated triggers while offering a premium "Glassmorphism" user interface. This project demonstrates the practical application of relational database concepts—such as ACID properties, triggers, and foreign key constraints—to a modern fintech use case.
 
 ## 2. Project Objectives
 - **Portfolio Management**: Allow users to log transactions (buy/sell) and monitor their holdings in real-time.
