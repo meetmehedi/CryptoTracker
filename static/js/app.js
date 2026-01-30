@@ -234,37 +234,50 @@ async function fetchTransactions() {
         }
 
         data.forEach((row) => {
-            // Row: type, quantity, price_at_time, txn_date, symbol, name
-            const type = row[0];
-            const quantity = parseFloat(row[1]);
-            const price = parseFloat(row[2]);
-            // Format Date and Time in BDT and US
-            const date = new Date(row[3]);
-            const bdtDate = date.toLocaleDateString('en-GB', { timeZone: 'Asia/Dhaka' });
-            const bdtTime = date.toLocaleTimeString('en-GB', { timeZone: 'Asia/Dhaka', hour: '2-digit', minute: '2-digit' });
+            try {
+                // Row: type, quantity, price_at_time, txn_date, symbol, name
+                const type = row[0];
+                const quantity = parseFloat(row[1]);
+                const price = parseFloat(row[2]);
 
-            const usDate = date.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
-            const usTime = date.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' });
+                let bdtDate = "Invalid Date";
+                let bdtTime = "";
+                let usDate = "";
+                let usTime = "";
 
-            const symbol = row[4];
-            const name = row[5];
+                try {
+                    const date = new Date(row[3]);
+                    bdtDate = date.toLocaleDateString('en-GB', { timeZone: 'Asia/Dhaka' });
+                    bdtTime = date.toLocaleTimeString('en-GB', { timeZone: 'Asia/Dhaka', hour: '2-digit', minute: '2-digit' });
+                    usDate = date.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
+                    usTime = date.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit' });
+                } catch (e) {
+                    console.error("Date parsing error:", e);
+                    bdtDate = row[3]; // Fallback to raw string
+                }
 
-            const typeColor = type === 'buy' ? 'text-emerald-400' : 'text-red-400';
-            const typeLabel = type.toUpperCase();
+                const symbol = row[4];
+                const name = row[5];
 
-            const tr = document.createElement("tr");
-            tr.className = "hover:bg-white/10 transition-colors";
-            tr.innerHTML = `
-                <td class="border-b border-white/10 px-8 py-4 font-bold text-white">${symbol} <span class="text-xs font-normal text-gray-400 block">${name}</span></td>
-                <td class="border-b border-white/10 px-8 py-4 ${typeColor} font-bold">${typeLabel}</td>
-                <td class="border-b border-white/10 px-8 py-4 text-white">${quantity.toFixed(4)}</td>
-                <td class="border-b border-white/10 px-8 py-4 text-white">$${price.toFixed(2)}</td>
-                <td class="border-b border-white/10 px-8 py-4">
-                    <div class="text-white text-sm">${bdtDate} ${bdtTime} (BDT)</div>
-                    <div class="text-gray-500 text-xs">${usDate} ${usTime} (US)</div>
-                </td>
-            `;
-            tbody.appendChild(tr);
+                const typeColor = type === 'buy' ? 'text-emerald-400' : 'text-red-400';
+                const typeLabel = type ? type.toUpperCase() : 'UNKNOWN';
+
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-white/10 transition-colors";
+                tr.innerHTML = `
+                    <td class="border-b border-white/10 px-8 py-4 font-bold text-white">${symbol} <span class="text-xs font-normal text-gray-400 block">${name}</span></td>
+                    <td class="border-b border-white/10 px-8 py-4 ${typeColor} font-bold">${typeLabel}</td>
+                    <td class="border-b border-white/10 px-8 py-4 text-white">${(quantity || 0).toFixed(4)}</td>
+                    <td class="border-b border-white/10 px-8 py-4 text-white">$${(price || 0).toFixed(2)}</td>
+                    <td class="border-b border-white/10 px-8 py-4">
+                        <div class="text-white text-sm">${bdtDate} ${bdtTime} (BDT)</div>
+                        <div class="text-gray-500 text-xs">${usDate} ${usTime} (US)</div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            } catch (err) {
+                console.error("Error rendering transaction row:", err, row);
+            }
         });
     } catch (err) {
         console.error(err);

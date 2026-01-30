@@ -273,7 +273,7 @@ def get_transactions():
     user_id = session['user_id']
     cursor = mysql.connection.cursor()
     cursor.execute("""
-        SELECT t.type, t.quantity, t.price_at_time, DATE_FORMAT(t.txn_date, '%%Y-%%m-%%dT%%T'), c.symbol, c.name
+        SELECT t.type, t.quantity, t.price_at_time, DATE_FORMAT(t.txn_date, '%%Y-%%m-%%dT%%TZ'), c.symbol, c.name
         FROM Transactions t
         JOIN Coins c ON t.coin_id = c.id
         WHERE t.user_id=%s
