@@ -4,7 +4,7 @@ from functools import wraps
 
 app = Flask(__name__)
 # In production, use a secure random key
-app.secret_key = 'super_secret_crypto_key' 
+app.secret_key = 'crypto_key_v2_force_logout' 
 
 try:
     init_db(app)
