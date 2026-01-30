@@ -273,7 +273,7 @@ def get_transactions():
     user_id = session['user_id']
     cursor = mysql.connection.cursor()
     cursor.execute("""
-        SELECT t.type, t.quantity, t.price_at_time, DATE_FORMAT(t.txn_date, '%Y-%m-%dT%T'), c.symbol, c.name
+        SELECT t.type, t.quantity, t.price_at_time, DATE_FORMAT(t.txn_date, '%%Y-%%m-%%dT%%T'), c.symbol, c.name
         FROM Transactions t
         JOIN Coins c ON t.coin_id = c.id
         WHERE t.user_id=%s
@@ -282,7 +282,6 @@ def get_transactions():
     """, (user_id,))
     txns = cursor.fetchall()
     cursor.close()
-    print(f"Fetched {len(txns)} transactions for user {user_id}")
     return jsonify(txns)
 
 if __name__ == '__main__':
