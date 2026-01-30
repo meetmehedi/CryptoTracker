@@ -10,7 +10,7 @@ A full-stack Cryptocurrency Portfolio Tracker featuring a futuristic **Liquid Gl
   - **Referential Integrity**: Robust schema design with foreign key constraints.
 - **Kaggle Automation**: Background script (`update_data.py`) that syncs the 700MB+ "Daily Global Crypto Market Tracker" dataset every 12 hours.
 - **Portfolio Analytics**: Instant visibility into **Total Value** and **Cumulative Profit/Loss (P&L)**.
-- **Localization**: Full support for **Bangladesh Standard Time (BDT)** in transaction history.
+- **Localization**: Dual support for **Bangladesh Standard Time (BDT)** and **US Eastern Time (EST/EDT)** in transaction history.
 
 ## 🛠️ Technical Stack
 - **Backend**: Python (Flask)

@@ -154,7 +154,7 @@ def add_transaction():
         # Holdings update handled by Trigger 'update_holdings_after_txn'
         cursor.execute(
             "INSERT INTO Transactions (user_id, coin_id, type, quantity, price_at_time, txn_date) "
-            "VALUES (%s, %s, %s, %s, %s, NOW())",
+            "VALUES (%s, %s, %s, %s, %s, UTC_TIMESTAMP())",
             (session['user_id'], data['coin_id'], data['type'], data['quantity'], data['price_at_time'])
         )
         mysql.connection.commit()
@@ -224,13 +224,56 @@ def get_holdings():
 
     return jsonify(holdings)
 
+@app.route('/api/alerts', methods=['GET', 'POST'])
+@login_required
+def manage_alerts():
+    user_id = session['user_id']
+    cursor = mysql.connection.cursor()
+    
+    if request.method == 'POST':
+        data = request.json
+        coin_id = data.get('coin_id')
+        condition = data.get('condition_type') # ABOVE or BELOW
+        target = data.get('target_value')
+        
+        cursor.execute("""
+            INSERT INTO Alerts (user_id, coin_id, condition_type, target_value, status) 
+            VALUES (%s, %s, %s, %s, 'ACTIVE')
+        """, (user_id, coin_id, condition, target))
+        mysql.connection.commit()
+        cursor.close()
+        return jsonify({"message": "Alert created"})
+    
+    # GET: Fetch alerts with current prices
+    cursor.execute("""
+        SELECT a.id, c.symbol, c.name, a.condition_type, a.target_value, a.status,
+               (SELECT p.price_usd FROM Prices p WHERE p.coin_id = c.id ORDER BY p.price_date DESC, p.id DESC LIMIT 1) as current_price,
+               a.coin_id
+        FROM Alerts a
+        JOIN Coins c ON a.coin_id = c.id
+        WHERE a.user_id = %s
+    """, (user_id,))
+    alerts = cursor.fetchall()
+    cursor.close()
+    return jsonify(alerts)
+
+@app.route('/api/alerts/delete/<int:alert_id>', methods=['POST'])
+@login_required
+def delete_alert(alert_id):
+    user_id = session['user_id']
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM Alerts WHERE id=%s AND user_id=%s", (alert_id, user_id))
+    mysql.connection.commit()
+    cursor.close()
+    return jsonify({"message": "Alert deleted"})
+
 @app.route('/api/transactions', methods=['GET'])
 @login_required
 def get_transactions():
     user_id = session['user_id']
     cursor = mysql.connection.cursor()
     cursor.execute("""
-        SELECT t.type, t.quantity, t.price_at_time, t.txn_date, c.symbol, c.name
+        SELECT t.type, t.quantity, t.price_at_time, DATE_FORMAT(t.txn_date, '%Y-%m-%dT%T'), c.symbol, c.name
         FROM Transactions t
         JOIN Coins c ON t.coin_id = c.id
         WHERE t.user_id=%s
@@ -239,6 +282,7 @@ def get_transactions():
     """, (user_id,))
     txns = cursor.fetchall()
     cursor.close()
+    print(f"Fetched {len(txns)} transactions for user {user_id}")
     return jsonify(txns)
 
 if __name__ == '__main__':

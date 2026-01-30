@@ -3,14 +3,34 @@ import os
 import MySQLdb
 
 # Configuration
-# Railway uses MYSQLHOST, MYSQLUSER, etc. while my app used MYSQL_HOST, MYSQL_USER
-DB_CONFIG = {
-    'host': os.environ.get('MYSQLHOST') or os.environ.get('MYSQL_HOST', 'localhost'),
-    'user': os.environ.get('MYSQLUSER') or os.environ.get('MYSQL_USER', 'root'),
-    'passwd': os.environ.get('MYSQLPASSWORD') or os.environ.get('MYSQL_PASSWORD', ''),
-    'port': int(os.environ.get('MYSQLPORT') or os.environ.get('MYSQL_PORT', 3306))
-}
-DB_NAME = os.environ.get('MYSQLDATABASE') or os.environ.get('MYSQL_DB', 'cppt_db')
+mysql_url = os.environ.get('MYSQL_URL')
+if mysql_url and mysql_url.startswith('mysql://'):
+    # Format: mysql://user:password@host:port/database
+    url = mysql_url.replace('mysql://', '')
+    auth, rest = url.split('@', 1)
+    user, password = auth.split(':', 1)
+    host_port, db_name = rest.split('/', 1)
+    if ':' in host_port:
+        host, port = host_port.split(':', 1)
+    else:
+        host = host_port
+        port = 3306
+    
+    DB_CONFIG = {
+        'host': host,
+        'user': user,
+        'passwd': password,
+        'port': int(port)
+    }
+    DB_NAME = db_name
+else:
+    DB_CONFIG = {
+        'host': os.environ.get('MYSQLHOST') or os.environ.get('MYSQL_HOST', 'localhost'),
+        'user': os.environ.get('MYSQLUSER') or os.environ.get('MYSQL_USER', 'root'),
+        'passwd': os.environ.get('MYSQLPASSWORD') or os.environ.get('MYSQL_PASSWORD', ''),
+        'port': int(os.environ.get('MYSQLPORT') or os.environ.get('MYSQL_PORT', 3306))
+    }
+    DB_NAME = os.environ.get('MYSQLDATABASE') or os.environ.get('MYSQL_DB', 'cppt_db')
 CSV_PATH_KAGGLE = '/kaggle/input/daily-crypto-tracker-dataset/daily_crypto_tracker.csv'
 CSV_PATH_LOCAL = 'combined_data.csv'
 

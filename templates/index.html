@@ -59,10 +59,28 @@
         </div>
       </div>
 
-      <button onclick="openModal()"
-        class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:scale-105 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-purple-500/30 transition-transform duration-300 border border-white/20">
-        + Transaction
-      </button>
+      <div class="flex space-x-4">
+        <button onclick="openAlertModal()"
+          class="glass-card hover:bg-white/10 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 border border-white/10">
+          🔔 Set Alert
+        </button>
+        <button onclick="openModal()"
+          class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:scale-105 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-purple-500/30 transition-transform duration-300 border border-white/20">
+          + Transaction
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Alerts Section -->
+    <div id="alerts-section" class="hidden mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
+      <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+        Active Alerts
+        <span
+          class="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-full border border-red-500/20 font-bold uppercase tracking-widest">Live</span>
+      </h2>
+      <div id="alerts-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Dynamic Alerts go here -->
+      </div>
     </div>
 
     <!-- Holdings Table -->
@@ -164,6 +182,65 @@
         <button type="submit"
           class="w-full mt-6 bg-gradient-to-r from-pink-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700 text-white font-bold py-4 rounded-xl shadow-xl shadow-indigo-500/20 transition-all duration-300 transform hover:-translate-y-1">
           Confirm Transaction
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Alert Modal -->
+  <div id="alertModal"
+    class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300">
+    <div class="glass-card rounded-3xl p-8 w-full max-w-md relative transform transition-all scale-100">
+      <button onclick="closeAlertModal()"
+        class="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h2 class="text-3xl font-bold text-white mb-1 text-center">Set Price Alert</h2>
+      <p class="text-gray-400 text-center mb-8 text-sm">Stay ahead of the market</p>
+
+      <form id="alertForm" class="space-y-5">
+        <div class="space-y-1">
+          <label class="block text-gray-400 text-xs uppercase tracking-wider font-bold ml-1">Asset</label>
+          <div class="relative">
+            <select id="alert_coin_id"
+              class="w-full rounded-xl px-4 py-3 outline-none transition-shadow appearance-none">
+              <!-- Populated via JS -->
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-gray-400 text-xs uppercase tracking-wider font-bold ml-1">Condition</label>
+          <div class="relative">
+            <select id="condition_type"
+              class="w-full rounded-xl px-4 py-3 outline-none transition-shadow appearance-none">
+              <option value="ABOVE">Price goes ABOVE</option>
+              <option value="BELOW">Price goes BELOW</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-gray-400 text-xs uppercase tracking-wider font-bold ml-1">Target Price (USD)</label>
+          <input id="target_price" type="number" step="any" placeholder="$0.00"
+            class="w-full rounded-xl px-4 py-3 outline-none transition-shadow" required>
+        </div>
+
+        <button type="submit"
+          class="w-full mt-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-4 rounded-xl shadow-xl shadow-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
+          Create Alert
         </button>
       </form>
     </div>

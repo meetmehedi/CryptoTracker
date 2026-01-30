@@ -35,17 +35,29 @@ graph LR
 ### Entity-Relationship Diagram
 ```mermaid
 erDiagram
-    Users ||--o{ Transactions : "logs"
-    Users ||--o{ Holdings : "possesses"
-    Coins ||--o{ Transactions : "included in"
-    Coins ||--o{ Prices : "price history"
-    Coins ||--o{ Holdings : "part of"
+    Users ||--o{ Transactions : "performs"
+    Users ||--o{ Holdings : "owns"
+    Users ||--o{ Watchlist : "monitors"
+    Users ||--o{ Alerts : "sets"
+    
+    Coins ||--o{ Transactions : "involved_in"
+    Coins ||--o{ Holdings : "part_of"
+    Coins ||--o{ Prices : "has_history"
+    Coins ||--o{ Watchlist : "added_to"
+    Coins ||--o{ Alerts : "monitored"
 
     Users {
         int id PK
         string name
         string email
         string password
+        date join_date
+    }
+    Coins {
+        int id PK
+        string symbol
+        string name
+        string category
     }
     Transactions {
         int id PK
@@ -54,6 +66,7 @@ erDiagram
         enum type
         double quantity
         double price_at_time
+        datetime txn_date
     }
     Holdings {
         int user_id PK, FK
@@ -61,10 +74,30 @@ erDiagram
         double total_quantity
         double avg_buy_price
     }
+    Prices {
+        int id PK
+        int coin_id FK
+        date price_date
+        double price_usd
+    }
+    Watchlist {
+        int id PK
+        int user_id FK
+        int coin_id FK
+    }
+    Alerts {
+        int id PK
+        int user_id FK
+        int coin_id FK
+        enum condition
+        decimal target_value
+        enum status
+    }
 ```
 
 ### Key Logic: Weighted Average Cost (WAC)
 The system ensures that the `Holdings` table is always accurate without manual interference. This is achieved via a **MySQL Trigger**:
+      - **WAC Calculation**: System automatically determines the weighted average cost for portfolio tracking.
 - When a **Buy** transaction is inserted:
   - New Quantity = `Old Quantity + New Quantity`
   - New WAC = `((Old WAC * Old Quantity) + (New Price * New Quantity)) / New Quantity`
@@ -85,6 +118,12 @@ The "Dashboard" provides instant insights into:
 - **Average Buy Price** for each asset
 - **Real-time Profit/Loss (P&L)** calculations with visual indicators.
 
+### 🔔 Smart Alert System
+Users can set custom price thresholds (ABOVE or BELOW) for any asset. The system dynamically monitors these conditions and highlights triggered alerts with a high-visibility "Liquid Red" glow on the dashboard.
+
+### 🌍 Dual-Timezone Logging
+To cater to global analysis, the system displays transaction timestamps in both **Bangladesh Standard Time (BDT)** and **US Eastern Time (EST/EDT)**. This ensures that users can correlate market movements across different time zones instantly.
+
 ## 6. Setup & Deployment
 
 ### Local Environment
@@ -99,7 +138,7 @@ The project is optimized for deployment on **Railway.app**, leveraging integrate
 CryptoTracker successfully demonstrates the application of advanced DBMS concepts in a modern fintech context. Future versions will include:
 - Advanced charting (Candlestick charts).
 - Multi-currency support (EUR, BDT, etc.).
-- Automated price alerts via email/SMS.
+- Automated notifications (Email/SMS Integration).
 
 ---
 **Report Generated on:** January 30, 2026
