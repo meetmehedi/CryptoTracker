@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoTracker | Real-Time Portfolio Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --buet-red: #A51C30;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* Animated Background Blobs */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            border-radius: 50%;
+            animation: move 20s infinite alternate;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(165, 28, 48, 0.2);
+            top: -100px;
+            right: -100px;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(59, 130, 246, 0.15);
+            bottom: -150px;
+            left: -150px;
+            animation-duration: 25s;
+        }
+
+        @keyframes move {
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(50px, 100px);
+            }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--buet-red), #801424);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px -10px rgba(165, 28, 48, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -10px rgba(165, 28, 48, 0.6);
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(248, 250, 252, 0.3);
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Navigation -->
+    <nav class="w-full max-w-6xl px-8 py-6 flex justify-between items-center z-10">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center font-bold">C</div>
+            <span class="text-xl font-bold tracking-tight">CryptoTracker</span>
+        </div>
+        <div class="flex gap-6 items-center text-sm font-medium text-slate-400">
+            <a href="PROJECT_REPORT.md" class="hover:text-white transition-colors">Report</a>
+            <a href="sql_guide.md" class="hover:text-white transition-colors">SQL Guide</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="w-full max-w-4xl px-8 pt-20 pb-32 text-center z-10">
+        <h1 class="text-6xl md:text-7xl font-bold mb-6 glow-text tracking-tighter">
+            Manage your crypto with <br>
+            <span class="text-red-500">Liquid Glass</span> precision.
+        </h1>
+        <p class="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+            A professional DBMS project featuring real-time tracking, automated weighted average cost calculation, and
+            Kaggle-powered historical data.
+        </p>
+
+        <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+            <a href="https://cpt.up.railway.app/"
+                class="btn-primary px-10 py-4 rounded-full font-semibold text-lg flex items-center gap-2">
+                Launch Live App
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="https://github.com/meetmehedi/CryptoTracker"
+                class="px-10 py-4 glass-card rounded-full font-semibold text-lg hover:bg-white/10 transition-all text-slate-200">
+                View Source
+            </a>
+        </div>
+    </main>
+
+    <!-- Features Section -->
+    <section class="w-full max-w-6xl px-8 pb-32 grid md:grid-cols-3 gap-6 z-10">
+        <div class="glass-card p-8 group hover:border-red-500/30 transition-all">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-6">
+                📈
+            </div>
+            <h3 class="text-xl font-bold mb-3">Real-Time Sync</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                Integrated with CoinGecko API for major assets and dynamic simulation for niche tokens from the 700MB+
+                Kaggle dataset.
+            </p>
+        </div>
+
+        <div class="glass-card p-8 group hover:border-red-500/30 transition-all">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-6">
+                ⚡
+            </div>
+            <h3 class="text-xl font-bold mb-3">MySQL Triggers</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                Automatic calculation of Weighted Average Cost (WAC) and holdings on every transaction using advanced
+                database triggers.
+            </p>
+        </div>
+
+        <div class="glass-card p-8 group hover:border-red-500/30 transition-all">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-6">
+                💎
+            </div>
+            <h3 class="text-xl font-bold mb-3">Liquid Glass UI</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                A minimalist glassmorphism interface with animated blobs, curated palettes, and a premium digital
+                experience.
+            </p>
+        </div>
+    </section>
+
+    <!-- Project Files Section -->
+    <section class="pb-32 w-full max-w-2xl px-8 z-10">
+        <h2 class="text-center text-2xl font-bold mb-8">Documentation</h2>
+        <div class="flex flex-col gap-3">
+            <a href="PROJECT_REPORT.md" class="glass-card px-6 py-4 flex justify-between items-center group">
+                <span class="font-medium text-slate-300 group-hover:text-white">📄 Project Report</span>
+                <span class="text-slate-500 group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+            <a href="sql_guide.md" class="glass-card px-6 py-4 flex justify-between items-center group">
+                <span class="font-medium text-slate-300 group-hover:text-white">🔍 SQL Query Guide</span>
+                <span class="text-slate-500 group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+            <a href="README.md" class="glass-card px-6 py-4 flex justify-between items-center group">
+                <span class="font-medium text-slate-300 group-hover:text-white">📜 Technical Readme</span>
+                <span class="text-slate-500 group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full py-12 border-t border-white/5 bg-slate-950/50 text-center z-10 mt-auto">
+        <p class="text-slate-500 text-sm">
+            Developed by <span class="text-white font-medium">Md. Mehedi Hasan</span>
+        </p>
+        <p
+            class="text-slate-600 text-xs mt-2 uppercase tracking-widest font-semibold flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-red-600"></span> BUET DBMS COURSE PROJECT
+        </p>
+    </footer>
+</body>
+
+</html>
